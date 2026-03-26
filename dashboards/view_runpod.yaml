@@ -1,0 +1,458 @@
+theme: dark
+title: RunPod
+path: runpod
+icon: mdi:server-network
+badges: []
+cards:
+  - type: vertical-stack
+    cards:
+      # ── HEADER ────────────────────────────────────────────
+      - type: custom:mushroom-title-card
+        title: RunPod Fleet
+        subtitle: >
+          {% set rented = states('sensor.runpod_account_total_gpus_rented') | int(0) %}
+          {% set total = states('sensor.runpod_account_total_gpus') | int(0) %}
+          {% set pct = ((rented / total) * 100) | round(0) if total > 0 else 0 %}
+          {{ rented }}/{{ total }} GPUs Rented · {{ pct }}% · ${{ states('sensor.runpod_account_earnings_today') | float(0) | round(2) }} today
+
+      # ── FLEET OVERVIEW ─────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-template-card
+            primary: GPUs Rented
+            secondary: >
+              {{ states('sensor.runpod_account_total_gpus_rented') }}/{{ states('sensor.runpod_account_total_gpus') }}
+            icon: mdi:expansion-card-variant
+            icon_color: >
+              {% set rented = states('sensor.runpod_account_total_gpus_rented') | int(0) %}
+              {% set total = states('sensor.runpod_account_total_gpus') | int(0) %}
+              {% set pct = (rented / total * 100) if total > 0 else 0 %}
+              {{ 'green' if pct > 70 else 'amber' if pct > 30 else 'red' }}
+            layout: vertical
+            tap_action:
+              action: more-info
+              entity: sensor.runpod_account_total_gpus_rented
+            card_mod:
+              style: |
+                ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+                mushroom-shape-icon { --icon-size: 32px; --shape-size: 42px; }
+
+          - type: custom:mushroom-template-card
+            primary: Available
+            secondary: >
+              {{ states('sensor.runpod_account_total_gpus_available') }} GPUs
+            icon: mdi:check-circle-outline
+            icon_color: >
+              {% set avail = states('sensor.runpod_account_total_gpus_available') | int(0) %}
+              {{ 'green' if avail > 10 else 'amber' if avail > 5 else 'red' }}
+            layout: vertical
+            tap_action:
+              action: more-info
+              entity: sensor.runpod_account_total_gpus_available
+            card_mod:
+              style: |
+                ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+                mushroom-shape-icon { --icon-size: 32px; --shape-size: 42px; }
+
+          - type: custom:mushroom-template-card
+            primary: Pods Running
+            secondary: >
+              {{ states('sensor.runpod_account_total_pods_running') }}
+            icon: mdi:cube-send
+            icon_color: >
+              {% set pods = states('sensor.runpod_account_total_pods_running') | int(0) %}
+              {{ 'green' if pods > 0 else 'disabled' }}
+            layout: vertical
+            tap_action:
+              action: more-info
+              entity: sensor.runpod_account_total_pods_running
+            card_mod:
+              style: |
+                ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+                mushroom-shape-icon { --icon-size: 32px; --shape-size: 42px; }
+
+          - type: custom:mushroom-template-card
+            primary: Host Balance
+            secondary: >
+              ${{ states('sensor.runpod_account_host_balance') | float(0) | round(2) }}
+            icon: mdi:wallet-outline
+            icon_color: >
+              {% set bal = states('sensor.runpod_account_host_balance') | float(0) %}
+              {{ 'green' if bal > 50 else 'amber' if bal > 20 else 'red' }}
+            layout: vertical
+            tap_action:
+              action: more-info
+              entity: sensor.runpod_account_host_balance
+            card_mod:
+              style: |
+                ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+                mushroom-shape-icon { --icon-size: 32px; --shape-size: 42px; }
+
+      # ── EARNINGS ───────────────────────────────────────────
+      - type: custom:mushroom-title-card
+        title: Earnings
+        subtitle: ""
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Today
+            secondary: >
+              ${{ states('sensor.runpod_account_earnings_today') | float(0) | round(2) }}
+            icon: mdi:cash-clock
+            icon_color: green
+            layout: vertical
+            tap_action:
+              action: more-info
+              entity: sensor.runpod_account_earnings_today
+            card_mod:
+              style: |
+                ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+                mushroom-shape-icon { --icon-size: 32px; --shape-size: 42px; }
+
+          - type: custom:mushroom-template-card
+            primary: Yesterday
+            secondary: >
+              ${{ states('sensor.runpod_account_earnings_yesterday') | float(0) | round(2) }}
+            icon: mdi:cash-register
+            icon_color: blue
+            layout: vertical
+            tap_action:
+              action: more-info
+              entity: sensor.runpod_account_earnings_yesterday
+            card_mod:
+              style: |
+                ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+                mushroom-shape-icon { --icon-size: 32px; --shape-size: 42px; }
+
+          - type: custom:mushroom-template-card
+            primary: Revenue/hr
+            secondary: >
+              {% set rev = states('sensor.zhen_rental_revenue_per_hour') | float(0)
+                + states('sensor.mars_rental_revenue_per_hour') | float(0)
+                + states('sensor.juno_rental_revenue_per_hour') | float(0)
+                + states('sensor.zeus_rental_revenue_per_hour') | float(0) %}
+              ${{ '%.2f' | format(rev) }}/hr
+            icon: mdi:cash-fast
+            icon_color: >
+              {% set rev = states('sensor.zhen_rental_revenue_per_hour') | float(0)
+                + states('sensor.mars_rental_revenue_per_hour') | float(0)
+                + states('sensor.juno_rental_revenue_per_hour') | float(0)
+                + states('sensor.zeus_rental_revenue_per_hour') | float(0) %}
+              {{ 'green' if rev > 2 else 'amber' if rev > 0.5 else 'red' }}
+            layout: vertical
+            card_mod:
+              style: |
+                ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+                mushroom-shape-icon { --icon-size: 32px; --shape-size: 42px; }
+
+          - type: custom:mushroom-template-card
+            primary: Projected/day
+            secondary: >
+              {% set rev = states('sensor.zhen_rental_revenue_per_hour') | float(0)
+                + states('sensor.mars_rental_revenue_per_hour') | float(0)
+                + states('sensor.juno_rental_revenue_per_hour') | float(0)
+                + states('sensor.zeus_rental_revenue_per_hour') | float(0) %}
+              ${{ '%.2f' | format(rev * 24) }}/day
+            icon: mdi:chart-line
+            icon_color: >
+              {% set rev = states('sensor.zhen_rental_revenue_per_hour') | float(0)
+                + states('sensor.mars_rental_revenue_per_hour') | float(0)
+                + states('sensor.juno_rental_revenue_per_hour') | float(0)
+                + states('sensor.zeus_rental_revenue_per_hour') | float(0) %}
+              {{ 'green' if rev * 24 > 50 else 'amber' if rev * 24 > 10 else 'red' }}
+            layout: vertical
+            card_mod:
+              style: |
+                ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+                mushroom-shape-icon { --icon-size: 32px; --shape-size: 42px; }
+
+      # ── MACHINES ───────────────────────────────────────────
+      - type: custom:mushroom-title-card
+        title: Machines
+        subtitle: ""
+
+      - type: horizontal-stack
+        cards:
+          # ZHEN
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Zhen
+                secondary: >
+                  RTX 5090 · {{ states('sensor.zhen_rented_gpus') }}/{{ states('sensor.zhen_total_gpus') }} GPUs
+                icon: mdi:server
+                icon_color: >
+                  {% set rented = states('sensor.zhen_rented_gpus') | int(0) %}
+                  {{ 'green' if rented > 0 else 'disabled' }}
+                tap_action:
+                  action: more-info
+                  entity: sensor.zhen_earnings_today
+                card_mod:
+                  style: |
+                    ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+              - type: entities
+                card_mod:
+                  style: |
+                    ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+                entities:
+                  - entity: sensor.zhen_rented_gpus
+                    name: Rented GPUs
+                  - entity: sensor.zhen_pods_running
+                    name: Pods Running
+                  - entity: sensor.zhen_rental_revenue_per_hour
+                    name: Revenue/hr
+                  - entity: sensor.zhen_earnings_today
+                    name: Earnings Today
+                  - entity: sensor.zhen_status
+                    name: Status
+
+          # MARS
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Mars
+                secondary: >
+                  RTX 3070 · {{ states('sensor.mars_rented_gpus') }}/{{ states('sensor.mars_total_gpus') }} GPUs
+                icon: mdi:server
+                icon_color: >
+                  {% set rented = states('sensor.mars_rented_gpus') | int(0) %}
+                  {{ 'green' if rented > 0 else 'disabled' }}
+                tap_action:
+                  action: more-info
+                  entity: sensor.mars_earnings_today
+                card_mod:
+                  style: |
+                    ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+              - type: entities
+                card_mod:
+                  style: |
+                    ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+                entities:
+                  - entity: sensor.mars_rented_gpus
+                    name: Rented GPUs
+                  - entity: sensor.mars_pods_running
+                    name: Pods Running
+                  - entity: sensor.mars_rental_revenue_per_hour
+                    name: Revenue/hr
+                  - entity: sensor.mars_earnings_today
+                    name: Earnings Today
+                  - entity: sensor.mars_status
+                    name: Status
+
+      - type: horizontal-stack
+        cards:
+          # JUNO
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Juno
+                secondary: >
+                  RTX 5090 · {{ states('sensor.juno_rented_gpus') }}/{{ states('sensor.juno_total_gpus') }} GPUs
+                icon: mdi:server
+                icon_color: >
+                  {% set rented = states('sensor.juno_rented_gpus') | int(0) %}
+                  {{ 'green' if rented > 0 else 'disabled' }}
+                tap_action:
+                  action: more-info
+                  entity: sensor.juno_earnings_today
+                card_mod:
+                  style: |
+                    ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+              - type: entities
+                card_mod:
+                  style: |
+                    ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+                entities:
+                  - entity: sensor.juno_rented_gpus
+                    name: Rented GPUs
+                  - entity: sensor.juno_pods_running
+                    name: Pods Running
+                  - entity: sensor.juno_rental_revenue_per_hour
+                    name: Revenue/hr
+                  - entity: sensor.juno_earnings_today
+                    name: Earnings Today
+                  - entity: sensor.juno_status
+                    name: Status
+
+          # ZEUS
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Zeus
+                secondary: >
+                  RTX 5090 · {{ states('sensor.zeus_rented_gpus') }}/{{ states('sensor.zeus_total_gpus') }} GPUs
+                icon: mdi:server
+                icon_color: >
+                  {% set rented = states('sensor.zeus_rented_gpus') | int(0) %}
+                  {{ 'green' if rented > 0 else 'disabled' }}
+                tap_action:
+                  action: more-info
+                  entity: sensor.zeus_earnings_today
+                card_mod:
+                  style: |
+                    ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+              - type: entities
+                card_mod:
+                  style: |
+                    ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
+                entities:
+                  - entity: sensor.zeus_rented_gpus
+                    name: Rented GPUs
+                  - entity: sensor.zeus_pods_running
+                    name: Pods Running
+                  - entity: sensor.zeus_rental_revenue_per_hour
+                    name: Revenue/hr
+                  - entity: sensor.zeus_earnings_today
+                    name: Earnings Today
+                  - entity: sensor.zeus_status
+                    name: Status
+
+      # ── EARNINGS CHART (7d) ─────────────────────────────────
+      - type: custom:mushroom-title-card
+        title: Earnings History
+        subtitle: ""
+
+      - type: custom:apexcharts-card
+        header:
+          show: true
+          title: Earnings per Machine (7d)
+        graph_span: 7d
+        series:
+          - entity: sensor.zhen_earnings_today
+            name: Zhen
+            type: line
+            stroke_width: 2
+            curve: smooth
+            color: "#e24b4a"
+            group_by:
+              func: avg
+              duration: 1h
+          - entity: sensor.mars_earnings_today
+            name: Mars
+            type: line
+            stroke_width: 2
+            curve: smooth
+            color: "#378ADD"
+            group_by:
+              func: avg
+              duration: 1h
+          - entity: sensor.juno_earnings_today
+            name: Juno
+            type: line
+            stroke_width: 2
+            curve: smooth
+            color: "#1D9E75"
+            group_by:
+              func: avg
+              duration: 1h
+          - entity: sensor.zeus_earnings_today
+            name: Zeus
+            type: line
+            stroke_width: 2
+            curve: smooth
+            color: "#FFA500"
+            group_by:
+              func: avg
+              duration: 1h
+        apex_config:
+          chart:
+            height: 250px
+          yaxis:
+            min: 0
+          legend:
+            show: true
+            position: top
+          xaxis:
+            type: datetime
+          tooltip:
+            theme: dark
+        card_mod:
+          style: |
+            ha-card {
+              background: rgba(0, 0, 0, 0.2);
+              border-radius: 12px;
+            }
+
+      # ── GPU RENTAL CHART (7d) ───────────────────────────────
+      - type: custom:apexcharts-card
+        header:
+          show: true
+          title: GPUs Rented per Machine (7d)
+        graph_span: 7d
+        series:
+          - entity: sensor.zhen_rented_gpus
+            name: Zhen
+            type: line
+            stroke_width: 2
+            curve: stepline
+            color: "#e24b4a"
+          - entity: sensor.mars_rented_gpus
+            name: Mars
+            type: line
+            stroke_width: 2
+            curve: stepline
+            color: "#378ADD"
+          - entity: sensor.juno_rented_gpus
+            name: Juno
+            type: line
+            stroke_width: 2
+            curve: stepline
+            color: "#1D9E75"
+          - entity: sensor.zeus_rented_gpus
+            name: Zeus
+            type: line
+            stroke_width: 2
+            curve: stepline
+            color: "#FFA500"
+        apex_config:
+          chart:
+            height: 200px
+          yaxis:
+            min: 0
+            max: 6
+            tickAmount: 6
+          legend:
+            show: true
+            position: top
+          xaxis:
+            type: datetime
+          tooltip:
+            theme: dark
+        card_mod:
+          style: |
+            ha-card {
+              background: rgba(0, 0, 0, 0.2);
+              border-radius: 12px;
+            }
+
+      # ── REVENUE TABLE ───────────────────────────────────────
+      - type: custom:mushroom-title-card
+        title: Revenue Breakdown
+        subtitle: ""
+
+      - type: markdown
+        content: >
+          {% set z_rev = states('sensor.zhen_rental_revenue_per_hour') | float(0) %}
+          {% set m_rev = states('sensor.mars_rental_revenue_per_hour') | float(0) %}
+          {% set j_rev = states('sensor.juno_rental_revenue_per_hour') | float(0) %}
+          {% set x_rev = states('sensor.zeus_rental_revenue_per_hour') | float(0) %}
+          {% set total_rev = z_rev + m_rev + j_rev + x_rev %}
+          {% set z_earn = states('sensor.zhen_earnings_today') | float(0) %}
+          {% set m_earn = states('sensor.mars_earnings_today') | float(0) %}
+          {% set j_earn = states('sensor.juno_earnings_today') | float(0) %}
+          {% set x_earn = states('sensor.zeus_earnings_today') | float(0) %}
+
+          | Machine | GPU | Rented | Today | $/hr | $/day proj. |
+          |:--------|:----|-------:|------:|-----:|------------:|
+          | **Zhen** | 5090 | {{ states('sensor.zhen_rented_gpus') }}/{{ states('sensor.zhen_total_gpus') }} | ${{ '%.2f' | format(z_earn) }} | ${{ '%.2f' | format(z_rev) }} | ${{ '%.2f' | format(z_rev * 24) }} |
+          | **Mars** | 3070 | {{ states('sensor.mars_rented_gpus') }}/{{ states('sensor.mars_total_gpus') }} | ${{ '%.2f' | format(m_earn) }} | ${{ '%.2f' | format(m_rev) }} | ${{ '%.2f' | format(m_rev * 24) }} |
+          | **Juno** | 5090 | {{ states('sensor.juno_rented_gpus') }}/{{ states('sensor.juno_total_gpus') }} | ${{ '%.2f' | format(j_earn) }} | ${{ '%.2f' | format(j_rev) }} | ${{ '%.2f' | format(j_rev * 24) }} |
+          | **Zeus** | 5090 | {{ states('sensor.zeus_rented_gpus') }}/{{ states('sensor.zeus_total_gpus') }} | ${{ '%.2f' | format(x_earn) }} | ${{ '%.2f' | format(x_rev) }} | ${{ '%.2f' | format(x_rev * 24) }} |
+          | **Total** | | | **${{ '%.2f' | format(z_earn + m_earn + j_earn + x_earn) }}** | **${{ '%.2f' | format(total_rev) }}** | **${{ '%.2f' | format(total_rev * 24) }}** |
+        card_mod:
+          style: |
+            ha-card {
+              background: rgba(0, 0, 0, 0.2);
+              border-radius: 12px;
+            }
