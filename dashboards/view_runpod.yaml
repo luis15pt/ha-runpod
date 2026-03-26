@@ -1,3 +1,16 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# RunPod Dashboard View
+# ─────────────────────────────────────────────────────────────────────────────
+# IMPORTANT: Replace the example machine names below with YOUR machine names.
+#
+# This example uses 4 machines: alpha, bravo, charlie, delta
+# Your entity IDs are based on your RunPod machine names, e.g.:
+#   Machine "MyServer" → sensor.myserver_rented_gpus
+#
+# Find your entity IDs: Settings > Devices > RunPod > (click machine)
+#
+# Required HACS frontend plugins: mushroom-cards, apexcharts-card, card-mod
+# ─────────────────────────────────────────────────────────────────────────────
 theme: dark
 title: RunPod
 path: runpod
@@ -128,17 +141,17 @@ cards:
           - type: custom:mushroom-template-card
             primary: Revenue/hr
             secondary: >
-              {% set rev = states('sensor.zhen_rental_revenue_per_hour') | float(0)
-                + states('sensor.mars_rental_revenue_per_hour') | float(0)
-                + states('sensor.juno_rental_revenue_per_hour') | float(0)
-                + states('sensor.zeus_rental_revenue_per_hour') | float(0) %}
+              {% set rev = states('sensor.alpha_rental_revenue_per_hour') | float(0)
+                + states('sensor.bravo_rental_revenue_per_hour') | float(0)
+                + states('sensor.charlie_rental_revenue_per_hour') | float(0)
+                + states('sensor.delta_rental_revenue_per_hour') | float(0) %}
               ${{ '%.2f' | format(rev) }}/hr
             icon: mdi:cash-fast
             icon_color: >
-              {% set rev = states('sensor.zhen_rental_revenue_per_hour') | float(0)
-                + states('sensor.mars_rental_revenue_per_hour') | float(0)
-                + states('sensor.juno_rental_revenue_per_hour') | float(0)
-                + states('sensor.zeus_rental_revenue_per_hour') | float(0) %}
+              {% set rev = states('sensor.alpha_rental_revenue_per_hour') | float(0)
+                + states('sensor.bravo_rental_revenue_per_hour') | float(0)
+                + states('sensor.charlie_rental_revenue_per_hour') | float(0)
+                + states('sensor.delta_rental_revenue_per_hour') | float(0) %}
               {{ 'green' if rev > 2 else 'amber' if rev > 0.5 else 'red' }}
             layout: vertical
             card_mod:
@@ -149,17 +162,17 @@ cards:
           - type: custom:mushroom-template-card
             primary: Projected/day
             secondary: >
-              {% set rev = states('sensor.zhen_rental_revenue_per_hour') | float(0)
-                + states('sensor.mars_rental_revenue_per_hour') | float(0)
-                + states('sensor.juno_rental_revenue_per_hour') | float(0)
-                + states('sensor.zeus_rental_revenue_per_hour') | float(0) %}
+              {% set rev = states('sensor.alpha_rental_revenue_per_hour') | float(0)
+                + states('sensor.bravo_rental_revenue_per_hour') | float(0)
+                + states('sensor.charlie_rental_revenue_per_hour') | float(0)
+                + states('sensor.delta_rental_revenue_per_hour') | float(0) %}
               ${{ '%.2f' | format(rev * 24) }}/day
             icon: mdi:chart-line
             icon_color: >
-              {% set rev = states('sensor.zhen_rental_revenue_per_hour') | float(0)
-                + states('sensor.mars_rental_revenue_per_hour') | float(0)
-                + states('sensor.juno_rental_revenue_per_hour') | float(0)
-                + states('sensor.zeus_rental_revenue_per_hour') | float(0) %}
+              {% set rev = states('sensor.alpha_rental_revenue_per_hour') | float(0)
+                + states('sensor.bravo_rental_revenue_per_hour') | float(0)
+                + states('sensor.charlie_rental_revenue_per_hour') | float(0)
+                + states('sensor.delta_rental_revenue_per_hour') | float(0) %}
               {{ 'green' if rev * 24 > 50 else 'amber' if rev * 24 > 10 else 'red' }}
             layout: vertical
             card_mod:
@@ -174,20 +187,20 @@ cards:
 
       - type: horizontal-stack
         cards:
-          # ZHEN
+          # ALPHA (replace with your machine name)
           - type: vertical-stack
             cards:
               - type: custom:mushroom-template-card
-                primary: Zhen
+                primary: Alpha
                 secondary: >
-                  RTX 5090 · {{ states('sensor.zhen_rented_gpus') }}/{{ states('sensor.zhen_total_gpus') }} GPUs
+                  {{ states('sensor.alpha_gpu_type') }} · {{ states('sensor.alpha_rented_gpus') }}/{{ states('sensor.alpha_total_gpus') }} GPUs
                 icon: mdi:server
                 icon_color: >
-                  {% set rented = states('sensor.zhen_rented_gpus') | int(0) %}
+                  {% set rented = states('sensor.alpha_rented_gpus') | int(0) %}
                   {{ 'green' if rented > 0 else 'disabled' }}
                 tap_action:
                   action: more-info
-                  entity: sensor.zhen_earnings_today
+                  entity: sensor.alpha_earnings_today
                 card_mod:
                   style: |
                     ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
@@ -196,31 +209,31 @@ cards:
                   style: |
                     ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
                 entities:
-                  - entity: sensor.zhen_rented_gpus
+                  - entity: sensor.alpha_rented_gpus
                     name: Rented GPUs
-                  - entity: sensor.zhen_pods_running
+                  - entity: sensor.alpha_pods_running
                     name: Pods Running
-                  - entity: sensor.zhen_rental_revenue_per_hour
+                  - entity: sensor.alpha_rental_revenue_per_hour
                     name: Revenue/hr
-                  - entity: sensor.zhen_earnings_today
+                  - entity: sensor.alpha_earnings_today
                     name: Earnings Today
-                  - entity: sensor.zhen_status
+                  - entity: sensor.alpha_status
                     name: Status
 
-          # MARS
+          # BRAVO (replace with your machine name)
           - type: vertical-stack
             cards:
               - type: custom:mushroom-template-card
-                primary: Mars
+                primary: Bravo
                 secondary: >
-                  RTX 3070 · {{ states('sensor.mars_rented_gpus') }}/{{ states('sensor.mars_total_gpus') }} GPUs
+                  {{ states('sensor.bravo_gpu_type') }} · {{ states('sensor.bravo_rented_gpus') }}/{{ states('sensor.bravo_total_gpus') }} GPUs
                 icon: mdi:server
                 icon_color: >
-                  {% set rented = states('sensor.mars_rented_gpus') | int(0) %}
+                  {% set rented = states('sensor.bravo_rented_gpus') | int(0) %}
                   {{ 'green' if rented > 0 else 'disabled' }}
                 tap_action:
                   action: more-info
-                  entity: sensor.mars_earnings_today
+                  entity: sensor.bravo_earnings_today
                 card_mod:
                   style: |
                     ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
@@ -229,33 +242,33 @@ cards:
                   style: |
                     ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
                 entities:
-                  - entity: sensor.mars_rented_gpus
+                  - entity: sensor.bravo_rented_gpus
                     name: Rented GPUs
-                  - entity: sensor.mars_pods_running
+                  - entity: sensor.bravo_pods_running
                     name: Pods Running
-                  - entity: sensor.mars_rental_revenue_per_hour
+                  - entity: sensor.bravo_rental_revenue_per_hour
                     name: Revenue/hr
-                  - entity: sensor.mars_earnings_today
+                  - entity: sensor.bravo_earnings_today
                     name: Earnings Today
-                  - entity: sensor.mars_status
+                  - entity: sensor.bravo_status
                     name: Status
 
       - type: horizontal-stack
         cards:
-          # JUNO
+          # CHARLIE (replace with your machine name)
           - type: vertical-stack
             cards:
               - type: custom:mushroom-template-card
-                primary: Juno
+                primary: Charlie
                 secondary: >
-                  RTX 5090 · {{ states('sensor.juno_rented_gpus') }}/{{ states('sensor.juno_total_gpus') }} GPUs
+                  {{ states('sensor.charlie_gpu_type') }} · {{ states('sensor.charlie_rented_gpus') }}/{{ states('sensor.charlie_total_gpus') }} GPUs
                 icon: mdi:server
                 icon_color: >
-                  {% set rented = states('sensor.juno_rented_gpus') | int(0) %}
+                  {% set rented = states('sensor.charlie_rented_gpus') | int(0) %}
                   {{ 'green' if rented > 0 else 'disabled' }}
                 tap_action:
                   action: more-info
-                  entity: sensor.juno_earnings_today
+                  entity: sensor.charlie_earnings_today
                 card_mod:
                   style: |
                     ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
@@ -264,31 +277,31 @@ cards:
                   style: |
                     ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
                 entities:
-                  - entity: sensor.juno_rented_gpus
+                  - entity: sensor.charlie_rented_gpus
                     name: Rented GPUs
-                  - entity: sensor.juno_pods_running
+                  - entity: sensor.charlie_pods_running
                     name: Pods Running
-                  - entity: sensor.juno_rental_revenue_per_hour
+                  - entity: sensor.charlie_rental_revenue_per_hour
                     name: Revenue/hr
-                  - entity: sensor.juno_earnings_today
+                  - entity: sensor.charlie_earnings_today
                     name: Earnings Today
-                  - entity: sensor.juno_status
+                  - entity: sensor.charlie_status
                     name: Status
 
-          # ZEUS
+          # DELTA (replace with your machine name)
           - type: vertical-stack
             cards:
               - type: custom:mushroom-template-card
-                primary: Zeus
+                primary: Delta
                 secondary: >
-                  RTX 5090 · {{ states('sensor.zeus_rented_gpus') }}/{{ states('sensor.zeus_total_gpus') }} GPUs
+                  {{ states('sensor.delta_gpu_type') }} · {{ states('sensor.delta_rented_gpus') }}/{{ states('sensor.delta_total_gpus') }} GPUs
                 icon: mdi:server
                 icon_color: >
-                  {% set rented = states('sensor.zeus_rented_gpus') | int(0) %}
+                  {% set rented = states('sensor.delta_rented_gpus') | int(0) %}
                   {{ 'green' if rented > 0 else 'disabled' }}
                 tap_action:
                   action: more-info
-                  entity: sensor.zeus_earnings_today
+                  entity: sensor.delta_earnings_today
                 card_mod:
                   style: |
                     ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
@@ -297,15 +310,15 @@ cards:
                   style: |
                     ha-card { background: rgba(0,0,0,0.2); border-radius: 12px; }
                 entities:
-                  - entity: sensor.zeus_rented_gpus
+                  - entity: sensor.delta_rented_gpus
                     name: Rented GPUs
-                  - entity: sensor.zeus_pods_running
+                  - entity: sensor.delta_pods_running
                     name: Pods Running
-                  - entity: sensor.zeus_rental_revenue_per_hour
+                  - entity: sensor.delta_rental_revenue_per_hour
                     name: Revenue/hr
-                  - entity: sensor.zeus_earnings_today
+                  - entity: sensor.delta_earnings_today
                     name: Earnings Today
-                  - entity: sensor.zeus_status
+                  - entity: sensor.delta_status
                     name: Status
 
       # ── EARNINGS CHART (7d) ─────────────────────────────────
@@ -319,8 +332,8 @@ cards:
           title: Earnings per Machine (7d)
         graph_span: 7d
         series:
-          - entity: sensor.zhen_earnings_today
-            name: Zhen
+          - entity: sensor.alpha_earnings_today
+            name: Alpha
             type: line
             stroke_width: 2
             curve: smooth
@@ -328,8 +341,8 @@ cards:
             group_by:
               func: avg
               duration: 1h
-          - entity: sensor.mars_earnings_today
-            name: Mars
+          - entity: sensor.bravo_earnings_today
+            name: Bravo
             type: line
             stroke_width: 2
             curve: smooth
@@ -337,8 +350,8 @@ cards:
             group_by:
               func: avg
               duration: 1h
-          - entity: sensor.juno_earnings_today
-            name: Juno
+          - entity: sensor.charlie_earnings_today
+            name: Charlie
             type: line
             stroke_width: 2
             curve: smooth
@@ -346,8 +359,8 @@ cards:
             group_by:
               func: avg
               duration: 1h
-          - entity: sensor.zeus_earnings_today
-            name: Zeus
+          - entity: sensor.delta_earnings_today
+            name: Delta
             type: line
             stroke_width: 2
             curve: smooth
@@ -381,26 +394,26 @@ cards:
           title: GPUs Rented per Machine (7d)
         graph_span: 7d
         series:
-          - entity: sensor.zhen_rented_gpus
-            name: Zhen
+          - entity: sensor.alpha_rented_gpus
+            name: Alpha
             type: line
             stroke_width: 2
             curve: stepline
             color: "#e24b4a"
-          - entity: sensor.mars_rented_gpus
-            name: Mars
+          - entity: sensor.bravo_rented_gpus
+            name: Bravo
             type: line
             stroke_width: 2
             curve: stepline
             color: "#378ADD"
-          - entity: sensor.juno_rented_gpus
-            name: Juno
+          - entity: sensor.charlie_rented_gpus
+            name: Charlie
             type: line
             stroke_width: 2
             curve: stepline
             color: "#1D9E75"
-          - entity: sensor.zeus_rented_gpus
-            name: Zeus
+          - entity: sensor.delta_rented_gpus
+            name: Delta
             type: line
             stroke_width: 2
             curve: stepline
@@ -433,23 +446,23 @@ cards:
 
       - type: markdown
         content: >
-          {% set z_rev = states('sensor.zhen_rental_revenue_per_hour') | float(0) %}
-          {% set m_rev = states('sensor.mars_rental_revenue_per_hour') | float(0) %}
-          {% set j_rev = states('sensor.juno_rental_revenue_per_hour') | float(0) %}
-          {% set x_rev = states('sensor.zeus_rental_revenue_per_hour') | float(0) %}
-          {% set total_rev = z_rev + m_rev + j_rev + x_rev %}
-          {% set z_earn = states('sensor.zhen_earnings_today') | float(0) %}
-          {% set m_earn = states('sensor.mars_earnings_today') | float(0) %}
-          {% set j_earn = states('sensor.juno_earnings_today') | float(0) %}
-          {% set x_earn = states('sensor.zeus_earnings_today') | float(0) %}
+          {% set a_rev = states('sensor.alpha_rental_revenue_per_hour') | float(0) %}
+          {% set b_rev = states('sensor.bravo_rental_revenue_per_hour') | float(0) %}
+          {% set c_rev = states('sensor.charlie_rental_revenue_per_hour') | float(0) %}
+          {% set d_rev = states('sensor.delta_rental_revenue_per_hour') | float(0) %}
+          {% set total_rev = a_rev + b_rev + c_rev + d_rev %}
+          {% set a_earn = states('sensor.alpha_earnings_today') | float(0) %}
+          {% set b_earn = states('sensor.bravo_earnings_today') | float(0) %}
+          {% set c_earn = states('sensor.charlie_earnings_today') | float(0) %}
+          {% set d_earn = states('sensor.delta_earnings_today') | float(0) %}
 
           | Machine | GPU | Rented | Today | $/hr | $/day proj. |
           |:--------|:----|-------:|------:|-----:|------------:|
-          | **Zhen** | 5090 | {{ states('sensor.zhen_rented_gpus') }}/{{ states('sensor.zhen_total_gpus') }} | ${{ '%.2f' | format(z_earn) }} | ${{ '%.2f' | format(z_rev) }} | ${{ '%.2f' | format(z_rev * 24) }} |
-          | **Mars** | 3070 | {{ states('sensor.mars_rented_gpus') }}/{{ states('sensor.mars_total_gpus') }} | ${{ '%.2f' | format(m_earn) }} | ${{ '%.2f' | format(m_rev) }} | ${{ '%.2f' | format(m_rev * 24) }} |
-          | **Juno** | 5090 | {{ states('sensor.juno_rented_gpus') }}/{{ states('sensor.juno_total_gpus') }} | ${{ '%.2f' | format(j_earn) }} | ${{ '%.2f' | format(j_rev) }} | ${{ '%.2f' | format(j_rev * 24) }} |
-          | **Zeus** | 5090 | {{ states('sensor.zeus_rented_gpus') }}/{{ states('sensor.zeus_total_gpus') }} | ${{ '%.2f' | format(x_earn) }} | ${{ '%.2f' | format(x_rev) }} | ${{ '%.2f' | format(x_rev * 24) }} |
-          | **Total** | | | **${{ '%.2f' | format(z_earn + m_earn + j_earn + x_earn) }}** | **${{ '%.2f' | format(total_rev) }}** | **${{ '%.2f' | format(total_rev * 24) }}** |
+          | **Alpha** | {{ states('sensor.alpha_gpu_type') }} | {{ states('sensor.alpha_rented_gpus') }}/{{ states('sensor.alpha_total_gpus') }} | ${{ '%.2f' | format(a_earn) }} | ${{ '%.2f' | format(a_rev) }} | ${{ '%.2f' | format(a_rev * 24) }} |
+          | **Bravo** | {{ states('sensor.bravo_gpu_type') }} | {{ states('sensor.bravo_rented_gpus') }}/{{ states('sensor.bravo_total_gpus') }} | ${{ '%.2f' | format(b_earn) }} | ${{ '%.2f' | format(b_rev) }} | ${{ '%.2f' | format(b_rev * 24) }} |
+          | **Charlie** | {{ states('sensor.charlie_gpu_type') }} | {{ states('sensor.charlie_rented_gpus') }}/{{ states('sensor.charlie_total_gpus') }} | ${{ '%.2f' | format(c_earn) }} | ${{ '%.2f' | format(c_rev) }} | ${{ '%.2f' | format(c_rev * 24) }} |
+          | **Delta** | {{ states('sensor.delta_gpu_type') }} | {{ states('sensor.delta_rented_gpus') }}/{{ states('sensor.delta_total_gpus') }} | ${{ '%.2f' | format(d_earn) }} | ${{ '%.2f' | format(d_rev) }} | ${{ '%.2f' | format(d_rev * 24) }} |
+          | **Total** | | | **${{ '%.2f' | format(a_earn + b_earn + c_earn + d_earn) }}** | **${{ '%.2f' | format(total_rev) }}** | **${{ '%.2f' | format(total_rev * 24) }}** |
         card_mod:
           style: |
             ha-card {
