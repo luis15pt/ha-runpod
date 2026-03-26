@@ -75,6 +75,17 @@ Monitor your [RunPod](https://www.runpod.io/) GPU hosting machines from Home Ass
 | Host Price / Min Bid | Pricing configuration |
 | RunPod Fee | RunPod commission percentage |
 
+## Example Dashboard
+
+An example dashboard view is included at [`dashboards/view_runpod.yaml`](dashboards/view_runpod.yaml). It uses mushroom cards, apexcharts, and card-mod to match a dark theme style.
+
+**Required HACS frontend plugins:**
+- [mushroom-cards](https://github.com/piitaya/lovelace-mushroom)
+- [apexcharts-card](https://github.com/RomRider/apexcharts-card)
+- [card-mod](https://github.com/thomasloven/lovelace-card-mod)
+
+> **Important:** The dashboard uses example machine names (`alpha`, `bravo`, `charlie`, `delta`). You **must** replace these with your actual RunPod machine names. Entity IDs are based on your machine names — for example, a machine named "MyServer" creates entities like `sensor.myserver_rented_gpus`. Find your entity IDs under **Settings > Devices > RunPod**.
+
 ## Polling Interval
 
 Data is refreshed every 60 seconds.
