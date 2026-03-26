@@ -1,0 +1,73 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to RunPod",
+        "description": "Enter your RunPod API key. You can find it at https://www.runpod.io/console/user/settings",
+        "data": {
+          "api_key": "API Key"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid API key",
+      "cannot_connect": "Could not connect to RunPod API",
+      "unknown": "An unexpected error occurred"
+    },
+    "abort": {
+      "already_configured": "This RunPod account is already configured"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "machine_status": {
+        "name": "Status",
+        "state": {
+          "listed": "Listed",
+          "unlisted": "Unlisted",
+          "maintenance": "Maintenance",
+          "hidden": "Hidden",
+          "unregistered": "Unregistered"
+        }
+      },
+      "gpu_type": { "name": "GPU Type" },
+      "gpu_count_total": { "name": "Total GPUs" },
+      "gpu_count_rented": { "name": "Rented GPUs" },
+      "gpu_allocated": { "name": "GPUs Allocated" },
+      "gpu_vram": { "name": "GPU VRAM" },
+      "host_price_per_gpu": { "name": "Host Price Per GPU" },
+      "host_min_bid_per_gpu": { "name": "Min Bid Per GPU" },
+      "total_earnings": { "name": "Earnings Today" },
+      "gpu_earnings": { "name": "GPU Earnings Today" },
+      "disk_earnings": { "name": "Disk Earnings Today" },
+      "uptime_1_week": { "name": "Uptime 1 Week" },
+      "uptime_4_week": { "name": "Uptime 4 Weeks" },
+      "uptime_12_week": { "name": "Uptime 12 Weeks" },
+      "cpu_utilization": { "name": "CPU Utilization" },
+      "ram_utilization": { "name": "RAM Utilization" },
+      "vcpu_total": { "name": "vCPUs Total" },
+      "vcpu_reserved": { "name": "vCPUs Reserved" },
+      "ram_total": { "name": "Total RAM" },
+      "ram_reserved": { "name": "RAM Reserved" },
+      "disk_total": { "name": "Total Disk" },
+      "disk_reserved": { "name": "Disk Reserved" },
+      "runpod_fee": { "name": "RunPod Fee" },
+      "pods_running": { "name": "Pods Running" },
+      "pods_stopped": { "name": "Pods Stopped" },
+      "pods_total": { "name": "Pods Total" },
+      "rental_revenue_per_hr": { "name": "Rental Revenue Per Hour" },
+      "pods_detail": { "name": "Pods" },
+      "total_machines": { "name": "Total Machines" },
+      "total_gpus": { "name": "Total GPUs" },
+      "total_gpus_rented": { "name": "Total GPUs Rented" },
+      "total_gpus_available": { "name": "Total GPUs Available" },
+      "total_pods_running": { "name": "Total Pods Running" },
+      "account_total_earnings": { "name": "Account Earnings Today" },
+      "account_gpu_earnings": { "name": "GPU Earnings Today" },
+      "account_disk_earnings": { "name": "Disk Earnings Today" },
+      "host_balance": { "name": "Host Balance" },
+      "yesterday_earnings": { "name": "Earnings Yesterday" },
+      "today_earnings": { "name": "Earnings Today" }
+    }
+  }
+}
