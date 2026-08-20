@@ -112,8 +112,17 @@ async def _request(
                 "Authorization": f"Bearer {api_key}",
             },
         ) as resp:
-            if resp.status in (401, 403):
+            if resp.status == 401:
                 raise RunPodAuthError("Invalid or expired API key")
+            if resp.status in (403, 429) or resp.status >= 500:
+                # Cloudflare fronts api.runpod.io and answers 403 (e.g. error
+                # 1010) or 429 when it throttles or blocks a client. Those are
+                # transient and must not be reported as bad credentials --
+                # RunPod itself answers 401 for an invalid key.
+                body = (await resp.text())[:200]
+                raise RunPodConnectionError(
+                    f"RunPod API temporarily unavailable ({resp.status}): {body}"
+                )
             if resp.status == 400:
                 body = await resp.text()
                 raise RunPodApiError(f"Bad request (400): {body}")
